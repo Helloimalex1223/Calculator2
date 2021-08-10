@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="display">
+           
+        </div>
+            <div class="buttoncontainer">
+                    <button id="7">7</button>
+                    <button id="8">8</button>
+                    <button id="9">9</button>
+                    <button id="divide">/</button>
+                    <button id="4">4</button>
+                    <button id="5">5</button>
+                    <button id="6">6</button>
+                    <button id="multiply">*</button>
+                    <button id="1">1</button>
+                    <button id="2">2</button>
+                    <button id="3">3</button>
+                    <button id="subtract">-</button>
+                    <button id="0">0</button>
+                    <button id="decimal">.</button>
+                    <button id="add">+</button>
+                    <button id="clear">C</button>
+                    <button class = "equals" id="=">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<style>
+    .container {
+        width: 300px;
+        height: 420px;
+        background-color: rgb(65, 65, 65);
+        border-radius: 5%;
+        padding-top: 20px;
+        border-style: solid;
+        border-color: rgb(36, 35, 34);
+    }
+    .display {
+        width: 90%;
+        height: 2em;
+        background-color: grey;
+        margin: auto;
+        padding-top: 5px;
+        font-size: 2em;
+        border-style: solid;
+    }
+    .displaytxt{
+        text-align: right;
+    }
+    .buttons {
+        width: 90%;
+        height: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2vw;
+        justify-content: space-around;
+    }
+    button {
+        background-color: rgb(192, 181, 181);
+        border-radius: 10%;
+        flex-direction: row;
+        width: 20%;
+        margin: .4vw;
+        font-weight: 600;
+        font-size: 2em;
+        color: black;
+    }
+    .equals {
+        width: 95%;
+        background-color: rgb(241, 102, 52);
+        color: white;
+        border-radius: 5%;
+    }
+   
+</style>
+<script>
+    let operand;
+    function add (a,b){
+       return a + b;
+    }
+    function subtract (a,b){
+       return a - b;
+    }
+    function divide (a,b){
+       return a / b;
+    }
+    function multiply (a,b){
+       return a * b;
+    }
+    function operate (operand, a, b){
+       return (operand (a, b));
+    }
+
+//TODO
+/* 
+Clean up code significantly - lots of repeating here
+*/
+let operators = ["add", "subtract", "multiply", "divide"];
+let numbers = "1234567890";
+
+//variables for storing the input from the buttons
+let initialVal = 0;
+let secondValue = 0;
+let initialValueConverted;
+let secondValueConverted;
+let ending = null;
+let equalCount = 0;
+
+//selects the calculator display, adds a text content element
+let displaySelector = document.querySelector(".display");
+let displayContent = document.createElement("p");
+displayContent.classList.add("displaytxt");
+
+//takes input from buttons, outputs into display and into variable
+const buttons = document.querySelectorAll("button");
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+       //check if clear has been pressed
+        if (e.target.id.includes("clear")){
+            initialVal = 0;
+            secondValue = 0;
+            equalCount = 0;
+            operand = undefined;
+            displayContent.textContent = "";
+            displaySelector.appendChild(displayContent);
+        }
+        //checks if the equal sign has been pressed, converts values to Ints
+
+        if (e.target.id.includes("=") && operand != undefined){
+            convertInt(initialVal, secondValue);
+            displayContent.textContent = (operate(add, initialVal, secondValue));
+            displaySelector.appendChild(displayContent);
+            }
+        //checks if operand is undefined, if it is, updates first variable's value
+        if(operand == undefined){
+            if(numbers.includes(e.target.id)){
+            initialVal += e.target.id;
+            displayContent.textContent += e.target.id;
+            displaySelector.appendChild(displayContent);
+            }
+            else if(operators.includes(e.target.id)){
+                operand = e.target.id;
+                displayContent.textContent += e.target.textContent;
+                displaySelector.appendChild(displayContent);
+            }
+        }
+        //if operand is defined and equal has not been clicked, updates second variable's value
+        if (operand != undefined && equalCount == 0){
+            if(numbers.includes(e.target.id)){
+                secondValue += e.target.id;
+                displayContent.textContent += e.target.id;
+                displaySelector.appendChild(displayContent);
+                }
+                else if(operators.includes(e.target.id)){
+                operand = e.target.id;
+                displaySelector.appendChild(displayContent);
+                }
+        }
+        //if equal has already been clicked once, update second variable with button id
+        if (equalCount >= 1){
+            if(numbers.includes(e.target.id)){
+                secondValue += e.target.id;
+                displayContent.textContent += e.target.id;
+                displaySelector.appendChild(displayContent);
+                }
+                else if(operators.includes(e.target.id)){
+                operand = e.target.id;
+                displayContent.textContent += e.target.textContent;
+                displaySelector.appendChild(displayContent);
+        }
+}
+        //when the equal sign is pressed, the values are converted to ints
+        //the operand input is converted to a function call and the display is appended with the answer
+        //the second integer is then set to zero if the user wishes to do a calculation w/ the answer
+        //the result is then rounded to 2 decimal places
+
+        if (e.target.id.includes("=") && operand != undefined){
+            if(operand == "divide" && secondValue == 0){
+                displayContent.textContent = "no divide by 0 plz";
+            }
+            else {
+            equalCount += 1;
+            convertInt(initialVal, secondValue);
+            ending = window[operand](initialValueConverted, secondValueConverted);
+            initialVal = ending;
+            displayContent.textContent = Math.round(ending * 100) / 100;
+            displaySelector.appendChild(displayContent);
+            secondValue = 0;
+            }
+        }
+    });
+});
+        function convertInt(a, b){
+            initialValueConverted = parseFloat(a);
+            secondValueConverted = parseFloat(b);
+        }
+</script>

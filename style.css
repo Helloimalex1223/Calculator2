@@ -1,0 +1,47 @@
+.container {
+    width: 300px;
+    height: 420px;
+    background-color: rgb(65, 65, 65);
+    border-radius: 5%;
+    padding-top: 20px;
+    border-style: solid;
+    border-color: rgb(36, 35, 34);
+}
+.display {
+    width: 90%;
+    height: 2em;
+    background-color: grey;
+    margin: auto;
+    padding-top: 5px;
+    font-size: 2em;
+    border-style: solid;
+}
+.displaytxt{
+    text-align: right;
+}
+.buttons {
+    width: 90%;
+    height: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2vw;
+    justify-content: space-around;
+}
+button {
+    background-color: rgb(192, 181, 181);
+    border-radius: 10%;
+    flex-direction: row;
+    width: 20%;
+    margin: .4vw;
+    font-weight: 600;
+    font-size: 2em;
+    color: black;
+}
+.equals {
+    width: 95%;
+    background-color: rgb(241, 102, 52);
+    color: white;
+    border-radius: 5%;
+}

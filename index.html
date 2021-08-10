@@ -188,7 +188,8 @@ buttons.forEach((button) => {
 
         if (e.target.id.includes("=") && operand != undefined){
             if(operand == "divide" && secondValue == 0){
-                displayContent.textContent = "no divide by 0 plz";
+                displayContent.textContent = "no divide by 0";
+                setTimeout(clear, 2000);
             }
             else {
             equalCount += 1;
@@ -205,5 +206,13 @@ buttons.forEach((button) => {
         function convertInt(a, b){
             initialValueConverted = parseFloat(a);
             secondValueConverted = parseFloat(b);
+        }
+        function clear (){
+            initialVal = 0;
+            secondValue = 0;
+            equalCount = 0;
+            operand = undefined;
+            displayContent.textContent = "";
+            displaySelector.appendChild(displayContent);
         }
 </script>
